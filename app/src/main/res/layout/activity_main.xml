@@ -4,33 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:id="@+id/tv_inactive_1"
-            style="@style/inactive_tab"
-            tools:text="Discover1" />
-
-        <TextView
-            android:id="@+id/tv_active"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            tools:text="Tab1" />
-
-
-        <TextView
-            android:id="@+id/tv_inactive_2"
-            style="@style/inactive_tab"
-            tools:text="Discover 2" />
-    </LinearLayout>
-
+    <android.support.v4.view.ViewPager
+       android:id="@+id/page_header"
+       android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+       android:layout_height="50dp"/>
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
