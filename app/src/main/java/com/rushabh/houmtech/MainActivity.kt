@@ -14,6 +14,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val listOfPages:ArrayList<Fragment> = ArrayList()
+
+        listOfPages.add(DataFragment())
+        listOfPages.add(DataFragment())
+        listOfPages.add(DataFragment())
+        listOfPages.add(DataFragment())
         viewPagerAdapter=PageAdapter(supportFragmentManager,listOfPages)
 
 
