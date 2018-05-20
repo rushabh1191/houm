@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val listOfPages:ArrayList<Fragment> = ArrayList()
 
+
         listOfPages.add(DataFragment())
         listOfPages.add(DataFragment())
         listOfPages.add(DataFragment())
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
 
         view_pager.adapter=viewPagerAdapter
+
+        view_pager.pageMargin=30
 
     }
 }
