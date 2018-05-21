@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.rushabh.houmtech.IResultListener
 import com.rushabh.houmtech.R
 import com.rushabh.houmtech.adapter.FooterViewAdapter
 import com.rushabh.houmtech.adapter.helper.MergeAdapter
@@ -34,11 +35,20 @@ class DataFragment : Fragment() {
         mergeAdapter=MergeAdapter(context!!)
         val dataListAdapter = DataListAdapter(context!!);
 
-        val footerIteAdapter=FooterViewAdapter(context!!)
+        val footerItemAdapter=FooterViewAdapter(context!!)
+
+        footerItemAdapter.onLoadMoreRequestListener=object : IResultListener<Int> {
+            override fun onResult(t: Int) {
+
+                dataListAdapter.count=dataListAdapter.count+10
+                dataListAdapter.notifyDataSetChanged()
+            }
+
+        }
 
         recycler_view.layoutManager = LinearLayoutManager(context!!)
         mergeAdapter.addAdapter(dataListAdapter as ParentRecyclerViewAdapter<ParentViewHolder>)
-        mergeAdapter.addAdapter(footerIteAdapter as ParentRecyclerViewAdapter<ParentViewHolder>)
+        mergeAdapter.addAdapter(footerItemAdapter as ParentRecyclerViewAdapter<ParentViewHolder>)
         recycler_view.adapter = mergeAdapter
 
     }
@@ -55,6 +65,8 @@ class DataFragment : Fragment() {
 class DataListAdapter(context: Context) : ParentRecyclerViewAdapter<DataViewHolder>(context,true) {
 
 
+    var count:Int=10
+
     override fun getItemViewType(position: Int): Int {
         return ViewHolderFactoryImpl.DATA_ITEM
     }
@@ -65,7 +77,7 @@ class DataListAdapter(context: Context) : ParentRecyclerViewAdapter<DataViewHold
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return count
     }
 
 }
