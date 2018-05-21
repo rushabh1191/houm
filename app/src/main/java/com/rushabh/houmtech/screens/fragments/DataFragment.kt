@@ -4,21 +4,26 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rushabh.houmtech.R
-import kotlinx.android.extensions.LayoutContainer
+import com.rushabh.houmtech.adapter.FooterViewAdapter
+import com.rushabh.houmtech.adapter.helper.MergeAdapter
+import com.rushabh.houmtech.adapter.helper.ParentRecyclerViewAdapter
+import com.rushabh.houmtech.adapter.helper.ParentViewHolder
+import com.rushabh.houmtech.adapter.helper.ViewHolderFactoryImpl
+import com.rushabh.houmtech.adapter.viewholders.DataViewHolder
+import kotlinx.android.synthetic.main.adapter_data_view.*
 import kotlinx.android.synthetic.main.fragment_data.*
 
 class DataFragment : Fragment() {
 
-    lateinit var adapter: DataListAdapter
     var title: String? = null
         get() = field
         private set
 
+    lateinit var mergeAdapter:MergeAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_data, container, false)
     }
@@ -26,10 +31,15 @@ class DataFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = DataListAdapter(context!!);
+        mergeAdapter=MergeAdapter(context!!)
+        val dataListAdapter = DataListAdapter(context!!);
+
+        val footerIteAdapter=FooterViewAdapter(context!!)
 
         recycler_view.layoutManager = LinearLayoutManager(context!!)
-        recycler_view.adapter = adapter
+        mergeAdapter.addAdapter(dataListAdapter as ParentRecyclerViewAdapter<ParentViewHolder>)
+        mergeAdapter.addAdapter(footerIteAdapter as ParentRecyclerViewAdapter<ParentViewHolder>)
+        recycler_view.adapter = mergeAdapter
 
     }
 
@@ -42,27 +52,20 @@ class DataFragment : Fragment() {
 }
 
 
-class DataListAdapter(var context: Context) : RecyclerView.Adapter<DataViewHolder>() {
+class DataListAdapter(context: Context) : ParentRecyclerViewAdapter<DataViewHolder>(context,true) {
 
-    val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
+    override fun getItemViewType(position: Int): Int {
+        return ViewHolderFactoryImpl.DATA_ITEM
+    }
+
+    override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+        holder.tv_row_title.text="Hello ${position}"
+    }
 
     override fun getItemCount(): Int {
         return 10
     }
-
-    override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
-
-        val view = layoutInflater.inflate(R.layout.adapter_data_view, parent, false);
-
-        return DataViewHolder(view)
-    }
-
-}
-
-class DataViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
 }
